@@ -11,10 +11,43 @@ import { UserComponent } from './users/user/user.component';
 import { EditServerComponent } from './servers/edit-server/edit-server.component';
 import { ServerComponent } from './servers/server/server.component';
 import { ServersService } from './servers/servers.service';
-
+import { RouterModule ,Routes} from '@angular/router';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { AppRoutingModule } from './app-routing.module';
 
+const appRoutes :Routes=[
+  {
+    path:'servers',component:ServersComponent,children:[
+      {
+        path:':id/edit',component:EditServerComponent
+      },
+      {
+        path:':id',component:ServerComponent
+      },
+
+    ]
+  },
+ 
+ 
+  {
+    path:'users',component:UsersComponent,children:[
+      {
+        path:':id/:name',component:UserComponent
+      }
+      
+    ]
+  },
+  
+  {
+    path:'',component:HomeComponent
+  },
+  
+  {
+    path:'NOT-FOUND',component:PageNotFoundComponent
+  },
+  {
+    path:'**',redirectTo:'NOT-FOUND'
+  }
+]
 
 @NgModule({
   declarations: [
@@ -24,16 +57,15 @@ import { AppRoutingModule } from './app-routing.module';
     ServersComponent,
     UserComponent,
     EditServerComponent,
-    ServerComponent,
-    PageNotFoundComponent
+    ServerComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
-  
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [ServersService],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
